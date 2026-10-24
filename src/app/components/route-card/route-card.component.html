@@ -1,0 +1,58 @@
+<article
+  class="route-card"
+  [class.route-card-active]="activa()"
+  [attr.aria-current]="activa() ? 'true' : null"
+  [attr.aria-label]="'Ruta hacia ' + ruta().nombreDestino + ', ' + ruta().distanciaKm + ' kilómetros, tiempo estimado ' + ruta().tiempoEstimado + ' minutos, accesibilidad ' + ruta().nivelAccesibilidad"
+>
+  <div class="card-header">
+    <div class="destination-title-wrap">
+      <span class="destination-pin" aria-hidden="true">🎯</span>
+      <h3 class="destination-title">{{ ruta().nombreDestino }}</h3>
+    </div>
+
+    <!-- Badge de Accesibilidad tipado -->
+    <span
+      class="badge-accesibilidad"
+      [ngClass]="'badge-' + ruta().nivelAccesibilidad"
+      role="status"
+    >
+      Accesibilidad {{ ruta().nivelAccesibilidad }}
+    </span>
+  </div>
+
+  @if (ruta().descripcion) {
+    <p class="route-description">{{ ruta().descripcion }}</p>
+  }
+
+  <div class="route-metrics" role="group" aria-label="Métricas del trayecto">
+    <div class="metric-item">
+      <span class="metric-label">Distancia:</span>
+      <span class="metric-value">{{ ruta().distanciaKm }} km</span>
+    </div>
+    <div class="metric-separator" aria-hidden="true">•</div>
+    <div class="metric-item">
+      <span class="metric-label">Tiempo aprox.:</span>
+      <span class="metric-value">{{ ruta().tiempoEstimado }} min</span>
+    </div>
+  </div>
+
+  <div class="card-actions">
+    <button
+      type="button"
+      class="btn-cylons btn-action"
+      [class.btn-primary]="!activa()"
+      [class.btn-active-guide]="activa()"
+      [disabled]="activa()"
+      (click)="onIniciarGuia()"
+      [attr.aria-label]="activa() ? 'Guía en curso hacia ' + ruta().nombreDestino : 'Iniciar guía asistida por voz hacia ' + ruta().nombreDestino"
+    >
+      @if (activa()) {
+        <span class="btn-icon" aria-hidden="true">✔</span>
+        <span>En curso</span>
+      } @else {
+        <span class="btn-icon" aria-hidden="true">🔊</span>
+        <span>Iniciar guía</span>
+      }
+    </button>
+  </div>
+</article>

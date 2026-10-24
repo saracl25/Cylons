@@ -1,0 +1,147 @@
+<aside class="voice-panel-container" role="region" aria-labelledby="voice-panel-title">
+  <!-- Cabecera del Panel de Asistencia Auditiva -->
+  <div class="panel-header">
+    <div class="panel-title-wrap">
+      <span class="voice-wave-icon" [class.animating]="vozActiva()" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </span>
+      <h2 id="voice-panel-title" class="panel-title">Guía por Voz CYLONS</h2>
+    </div>
+
+    <button
+      type="button"
+      class="btn-cylons btn-toggle-voice"
+      [class.btn-voice-on]="vozActiva()"
+      [class.btn-voice-off]="!vozActiva()"
+      (click)="onToggleVoz()"
+      [attr.aria-pressed]="vozActiva()"
+      [attr.aria-label]="vozActiva() ? 'Detener guía interactiva por voz' : 'Activar guía interactiva por voz asistida'"
+    >
+      <span class="btn-icon" aria-hidden="true">{{ vozActiva() ? '⏹' : '▶' }}</span>
+      <span>{{ vozActiva() ? 'Pausar guía por voz' : 'Activar guía por voz' }}</span>
+    </button>
+  </div>
+
+  <!-- Tarjeta de Estado del Destino Actual -->
+  <div class="current-destination-card" role="status" aria-live="polite">
+    <span class="dest-label">Destino activo:</span>
+    <strong class="dest-value">
+      {{ rutaActiva() ? rutaActiva()?.nombreDestino : 'Ninguno (Seleccione una ruta de la lista)' }}
+    </strong>
+  </div>
+
+  <!-- Instrucción de Navegación en Curso -->
+  <div class="instruction-box" role="status" aria-live="assertive">
+    <div class="instruction-meta">
+      <span class="step-badge">
+        Paso {{ pasoActual().numero }} de {{ instrucciones().length }}
+      </span>
+      <span class="progress-number">{{ porcentajeProgreso() }}% completado</span>
+    </div>
+
+    <!-- Barra de progreso accesible -->
+    <div
+      class="progress-bar-track"
+      role="progressbar"
+      [attr.aria-valuenow]="porcentajeProgreso()"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [attr.aria-label]="'Progreso de la ruta: ' + porcentajeProgreso() + ' por ciento'"
+    >
+      <div class="progress-bar-fill" [style.width.%]="porcentajeProgreso()"></div>
+    </div>
+
+    <p class="instruction-text">
+      {{ pasoActual().texto }}
+    </p>
+
+    <!-- Controles de navegación manual de pasos -->
+    <div class="step-manual-controls">
+      <button
+        type="button"
+        class="btn-step"
+        (click)="pasoAnterior()"
+        [disabled]="instrucciones().length <= 1"
+        aria-label="Escuchar paso anterior"
+      >
+        ◀ Anterior
+      </button>
+
+      @if (vozService.isSpeaking()) {
+        <span class="tts-live-tag" aria-hidden="true">
+          Hablando...
+        </span>
+      }
+
+      <button
+        type="button"
+        class="btn-step"
+        (click)="pasoSiguiente()"
+        [disabled]="instrucciones().length <= 1"
+        aria-label="Escuchar paso siguiente"
+      >
+        Siguiente ▶
+      </button>
+    </div>
+  </div>
+
+  <!-- Botón de Acción Principal: Reportar Obstáculo -->
+  <div class="action-section">
+    <button
+      type="button"
+      class="btn-cylons btn-warning btn-report"
+      (click)="onReportarObstaculo()"
+      aria-label="Reportar obstáculo o peligro en la vía inmediatamente"
+    >
+      <span class="report-icon" aria-hidden="true">⚠️</span>
+      <span class="report-text">Reportar obstáculo</span>
+    </button>
+    <p class="report-hint">
+      Genera y anuncia una alerta en el trayecto en tiempo real.
+    </p>
+  </div>
+
+  <!-- Alertas Activas Ordenadas por Distancia -->
+  <div class="alerts-section" role="region" aria-labelledby="alerts-title">
+    <div class="alerts-header">
+      <h3 id="alerts-title" class="alerts-title">
+        <span aria-hidden="true">🔔</span>
+        Alertas y Obstáculos Cercanos
+      </h3>
+      <span class="alerts-count" role="status">
+        {{ alertasOrdenadas().length }} activos
+      </span>
+    </div>
+
+    <div class="alerts-list" role="log" aria-live="polite">
+      @for (alerta of alertasOrdenadas(); track alerta.id) {
+        <div
+          class="alert-item"
+          [class.alert-severidad-alta]="alerta.severidad === 'alta'"
+          [class.alert-severidad-media]="alerta.severidad === 'media'"
+          [class.alert-severidad-baja]="alerta.severidad === 'baja'"
+          role="alert"
+        >
+          <div class="alert-top">
+            <span class="alert-type">
+              {{ alerta.tipoAlerta === 'escalón' ? '🪜' : alerta.tipoAlerta === 'obra' ? '🚧' : '🚶' }}
+              {{ alerta.tipoAlerta | uppercase }}
+            </span>
+            <span class="alert-distance">{{ alerta.distanciaMetros }} metros</span>
+          </div>
+
+          <div class="alert-details">
+            <span class="alert-severity-badge">Riesgo {{ alerta.severidad }}</span>
+            @if (alerta.ubicacion) {
+              <span class="alert-location">{{ alerta.ubicacion }}</span>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="no-alerts">
+          <p>No hay alertas de riesgo reportadas en el perímetro cercano.</p>
+        </div>
+      }
+    </div>
+  </div>
+</aside>

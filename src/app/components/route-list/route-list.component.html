@@ -1,0 +1,30 @@
+<section class="route-list-container" aria-labelledby="rutas-heading">
+  <div class="route-list-header">
+    <div class="header-titles">
+      <h2 id="rutas-heading" class="section-title">
+        <span class="icon" aria-hidden="true">🗺️</span>
+        Rutas Accesibles en Calarcá
+      </h2>
+      <p class="section-subtitle">
+        Destinos auditados con sendas peatonales seguras, cruces guiados y rampas adaptadas.
+      </p>
+    </div>
+    <span class="rutas-counter" role="status">
+      {{ rutas().length }} rutas disponibles
+    </span>
+  </div>
+
+  <div class="cards-grid" role="feed" aria-label="Catálogo de rutas peatonales accesibles">
+    @for (item of rutas(); track item.id) {
+      <app-route-card
+        [ruta]="item"
+        [activa]="item.id === rutaActivaId()"
+        (seleccionar)="onRutaElegida($event)"
+      ></app-route-card>
+    } @empty {
+      <div class="empty-state" role="status">
+        <p>No se encontraron rutas accesibles cargadas en el sistema.</p>
+      </div>
+    }
+  </div>
+</section>

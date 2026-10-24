@@ -1,0 +1,52 @@
+<header class="status-bar" role="banner" aria-label="Barra de estado del sistema CYLONS">
+  <div class="brand-section">
+    <div class="brand-logo" aria-hidden="true">
+      <span class="logo-eye"></span>
+    </div>
+    <div class="brand-text">
+      <h1 class="system-title">CYLONS</h1>
+      <span class="system-sub">Navegación Asistida Accesible</span>
+    </div>
+  </div>
+
+  @if (usuario()) {
+    <div class="user-chip" role="status" aria-label="Usuario actual">
+      <span class="user-icon" aria-hidden="true">👤</span>
+      <div class="user-details">
+        <span class="user-name">{{ usuario()?.nombre }}</span>
+        <span class="user-city">{{ usuario()?.ciudad }}</span>
+      </div>
+    </div>
+  }
+
+  <div class="telemetry-section" role="region" aria-label="Indicadores de telemetría y sensores">
+    <!-- Indicador de Síntesis de Voz -->
+    <div
+      class="telemetry-pill"
+      [class.active]="ttsActivo()"
+      role="status"
+      [attr.aria-label]="ttsActivo() ? 'Guía por voz activada' : 'Guía por voz silenciada'"
+    >
+      <span class="dot" [class.dot-pulse]="ttsActivo()" aria-hidden="true"></span>
+      <span class="pill-label">VOZ: {{ ttsActivo() ? 'EN VIVO' : 'EN ESPERA' }}</span>
+    </div>
+
+    <!-- Indicador GPS -->
+    <div class="telemetry-pill gps-pill" role="status" aria-label="Precisión del sistema de posicionamiento satelital">
+      <span class="pill-icon" aria-hidden="true">📍</span>
+      <span class="pill-label">{{ estadoGps() }}</span>
+    </div>
+
+    <!-- Indicador de Batería -->
+    <div class="telemetry-pill battery-pill" role="status" [attr.aria-label]="'Batería al ' + nivelBateria() + ' por ciento'">
+      <span class="pill-icon" aria-hidden="true">🔋</span>
+      <span class="pill-label">{{ nivelBateria() }}%</span>
+    </div>
+
+    <!-- Reloj en tiempo real -->
+    <div class="telemetry-pill time-pill" role="timer" aria-label="Hora local actual">
+      <span class="pill-icon" aria-hidden="true">🕒</span>
+      <time class="pill-label">{{ horaActual() }}</time>
+    </div>
+  </div>
+</header>

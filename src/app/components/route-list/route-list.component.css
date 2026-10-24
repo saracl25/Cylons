@@ -1,0 +1,66 @@
+.route-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.route-list-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #222222;
+  padding-bottom: 16px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 1.4rem;
+}
+
+.section-subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.rutas-counter {
+  background-color: #1a1a1a;
+  color: var(--color-accent);
+  border: 1px solid #333333;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+/* En resoluciones medianas y amplias distribuimos las tarjetas en 2 columnas */
+@media (min-width: 600px) {
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  background-color: #111111;
+  border: 2px dashed #333333;
+  border-radius: 12px;
+  color: var(--color-text-muted);
+}
