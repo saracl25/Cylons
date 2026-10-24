@@ -1,0 +1,86 @@
+{
+  "usuario": {
+    "nombre": "Mariana Valdés",
+    "nivelAsistencia": "Baja visión - Guía auditiva y háptica activada",
+    "ciudad": "Calarcá, Quindío"
+  },
+  "rutas": [
+    {
+      "id": "ruta-1",
+      "nombreDestino": "Universidad Lasallista",
+      "distanciaKm": 1.4,
+      "tiempoEstimado": 18,
+      "nivelAccesibilidad": "alta",
+      "descripcion": "Trayecto por Carrera 24 con andenes podotáctiles continuos y cruces semaforizados sonoros."
+    },
+    {
+      "id": "ruta-2",
+      "nombreDestino": "Fundación Aliada",
+      "distanciaKm": 0.8,
+      "tiempoEstimado": 11,
+      "nivelAccesibilidad": "alta",
+      "descripcion": "Ruta peatonal protegida por Calle 39; libre de escalones abruptos y con rampas de acceso suave."
+    },
+    {
+      "id": "ruta-3",
+      "nombreDestino": "Terminal de Transportes",
+      "distanciaKm": 2.6,
+      "tiempoEstimado": 34,
+      "nivelAccesibilidad": "media",
+      "descripcion": "Paso por Avenida Colón; requiere precaución en dos cruces con flujo constante de vehículos intermunicipales."
+    },
+    {
+      "id": "ruta-4",
+      "nombreDestino": "Casa (Barrio El Cacique)",
+      "distanciaKm": 0.5,
+      "tiempoEstimado": 7,
+      "nivelAccesibilidad": "alta",
+      "descripcion": "Sendero residencial tranquilo con guía perimetral clara e iluminación diurna y nocturna óptima."
+    },
+    {
+      "id": "ruta-5",
+      "nombreDestino": "Plaza de Bolívar de Calarcá",
+      "distanciaKm": 1.1,
+      "tiempoEstimado": 15,
+      "nivelAccesibilidad": "baja",
+      "descripcion": "Zona céntrica comercial con andenes angostos y presencia de desniveles pronunciados."
+    }
+  ],
+  "alertas": [
+    {
+      "id": "alt-101",
+      "tipoAlerta": "escalón",
+      "distanciaMetros": 12,
+      "severidad": "alta",
+      "ubicacion": "Carrera 24 con Calle 38, esquina oriental (desnivel de 18 cm sin rampa)"
+    },
+    {
+      "id": "alt-102",
+      "tipoAlerta": "peatón",
+      "distanciaMetros": 4,
+      "severidad": "media",
+      "ubicacion": "Frente a panadería central, peatones detenidos en franja podotáctil"
+    },
+    {
+      "id": "alt-103",
+      "tipoAlerta": "obra",
+      "distanciaMetros": 28,
+      "severidad": "alta",
+      "ubicacion": "Calle 40 frente a parqueadero, excavación acordonada con polisombra"
+    },
+    {
+      "id": "alt-104",
+      "tipoAlerta": "escalón",
+      "distanciaMetros": 45,
+      "severidad": "baja",
+      "ubicacion": "Acceso a rampa de la Fundación Aliada, cambio de textura en piso"
+    },
+    {
+      "id": "alt-105",
+      "tipoAlerta": "peatón",
+      "distanciaMetros": 8,
+      "severidad": "baja",
+      "ubicacion": "Cruce peatonal con señal audible en ciclo verde"
+    }
+  ]
+}
