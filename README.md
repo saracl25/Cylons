@@ -60,36 +60,7 @@ La solución implementa la separación estricta de responsabilidades exigida:
 
 ---
 
-## 3. Mapeo de Requisitos de la Rúbrica
 
-| Requisito de la Rúbrica | Archivo(s) donde se evidencia | Explicación Técnica |
-| :--- | :--- | :--- |
-| **1. Implementación en Angular** | `src/app/`, `package.json` | Proyecto Angular moderno con componentes *standalone*, control de flujo (`@if`, `@for`, `track`) y TypeScript en modo estricto. |
-| **2. Modelo de datos tipado** | `src/app/models/*.model.ts` | Modelos `Ruta`, `Alerta`, `Usuario` y `CylonsData` con *union types* (`'alta' \| 'media' \| 'baja'`, `'peatón' \| 'obra' \| 'escalón'`). |
-| **3. Fuente de datos externa** | `public/assets/data/cylons-data.json` | JSON desacoplado con 5 rutas y 5 alertas reales en Envigado / Colombia (usuario: Daniela Sucerquia). Sin colecciones quemadas. |
-| **4. Servicio con HttpClient** | `src/app/services/cylons.service.ts` | Servicio `@Injectable({ providedIn: 'root' })` con `inject(HttpClient)`, `delay(900)`, `tap`, `catchError` y `finalize`. |
-| **5. Manejo de estado con Signals** | `cylons.service.ts`, `app.component.ts` | Señales reactivas: `rutas`, `alertas`, `usuario`, `isLoading`, `errorMessage`, `rutaActiva` y `vozActiva`. |
-| **6. Componentización (Padre / Hijo)** | `route-list/`, `route-card/` | `RouteList` (Padre) itera con `@for` y recibe `RouteCard` (Hijo) mediante comunicación desacoplada `input()` y `output()`. |
-| **7. Renderizado dinámico y 3 estados** | `src/app/app.component.html` | Estado 1: Carga con Spinner; Estado 2: Error con Reintento; Estado 3: Aplicación lista con layout de 2 columnas. |
-| **8. Interacciones significativas** | `voice-panel/`, `voz.service.ts` | 1) "Activar guía por voz": cicla instrucciones audibles con Web Speech API (`es-CO`) y barra de progreso. 2) "Reportar obstáculo": agrega alertas inmutables y las reordena por cercanía métrica. |
-| **9. Diseño Responsive Mobile-First** | `src/styles.css`, `app.component.css` | 1 columna en móvil (375px) y 2 columnas con panel *sticky* en escritorio (≥960px y 1440px). Botones ≥48px y contraste WCAG AAA. |
-| **10. Organización del código** | Estructura en `models/`, `services/`, `components/` | Separación limpia de responsabilidades con documentación en español. |
-
----
-
-## 4. Truco para Demostración en Vivo (Defensa Oral)
-
-Para demostrar en vivo la resiliencia de la aplicación y el botón **"Reintentar conexión"**:
-
-### Opción A (Desde la Interfaz):
-1. En el pie de página de la aplicación, haga clic en el botón:
-   `🛠️ Demo: Simular fallo de red (404/Error)`.
-2. La aplicación simulará de inmediato un fallo de red, mostrando el contenedor de error ámbar con el mensaje de diagnóstico y el botón **"Reintentar conexión"**.
-3. Pulse **"Restaurar fuente de datos original"** o vuelva a pulsar el botón para recuperar el funcionamiento normal.
-
-### Opción B (Desde el Código):
-En el archivo `src/app/services/cylons.service.ts`, cambie temporalmente la línea 22:
-```typescript
 public dataUrl = 'assets/data/inexistente.json';
 ```
 Guarde el archivo y el servidor de desarrollo recargará mostrando la pantalla de error y el botón de reintento.
