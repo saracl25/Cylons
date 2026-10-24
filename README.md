@@ -1,59 +1,95 @@
-# Cylons
+# CYLONS · Asistencia de Navegación Accesible para Personas con Discapacidad Visual
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.24.
+**Asignatura:** Desarrollo Web  
+**Entregable:** Unidad 2 — Segunda Entrega: Tecnologías del lado del cliente (Front-End) — 20%  
+**Integrantes:** Sara Cardona Lastra y Daniela Sucerquia Armesto  
+**Docente:** Neider Xavier Vergara  
+**Institución:** Corporación Universitaria Lasallista (Medellín / Caldas, Antioquia)  
+**Tecnología:** Angular 18+ (Angular 21), TypeScript estricto, Angular Signals, Web Speech API nativa (es-CO)  
 
-## Development server
+---
 
-To start a local development server, run:
+## 1. Cómo Ejecutar el Proyecto
 
+### Prerrequisitos
+- Node.js 18+ o superior (recomendado Node 20 o 22).
+- npm 10+.
+
+### Pasos de ejecución
 ```bash
-ng serve
+# 1. Instalar dependencias
+npm install --legacy-peer-deps
+
+# 2. Iniciar el servidor de desarrollo local
+npm start
+# o alternativamente:
+npx ng serve
+
+# 3. Abrir en el navegador
+# http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### Compilación para Producción
 ```bash
-ng generate component component-name
+npm run build
+# Compila con cero errores y genera el bundle optimizado en /dist/cylons
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
+## 2. Flujo de Datos Arquitectónico
+
+La solución implementa la separación estricta de responsabilidades exigida:
+
+```
+[ public/assets/data/cylons-data.json ]   <-- Fuente de datos externa simulada
+                  │
+                  ▼ (HttpClient.get + delay(900) + catchError)
+        [ CylonsService ]                <-- Capa de servicios y estado reactivo global
+                  │
+                  ▼ (Angular Signals: rutas, alertas, usuario, isLoading, errorMessage)
+         [ AppComponent ]                <-- Orquestador raíz (gobierna los 3 estados con @if)
+           │            │
+           │ (input)    │ (input)
+           ▼            ▼
+  [ VoicePanel ]    [ RouteList ]        <-- Componentes especializados
+                        │
+                        ▼ (input / output)
+                  [ RouteCard ]          <-- Componente individual reutilizable
 ```
 
-## Building
+---
 
-To build the project run:
+## 3. Mapeo de Requisitos de la Rúbrica
 
-```bash
-ng build
+| Requisito de la Rúbrica | Archivo(s) donde se evidencia | Explicación Técnica |
+| :--- | :--- | :--- |
+| **1. Implementación en Angular** | `src/app/`, `package.json` | Proyecto Angular moderno con componentes *standalone*, control de flujo (`@if`, `@for`, `track`) y TypeScript en modo estricto. |
+| **2. Modelo de datos tipado** | `src/app/models/*.model.ts` | Modelos `Ruta`, `Alerta`, `Usuario` y `CylonsData` con *union types* (`'alta' \| 'media' \| 'baja'`, `'peatón' \| 'obra' \| 'escalón'`). |
+| **3. Fuente de datos externa** | `public/assets/data/cylons-data.json` | JSON desacoplado con 5 rutas y 5 alertas reales en Envigado / Colombia (usuario: Daniela Sucerquia). Sin colecciones quemadas. |
+| **4. Servicio con HttpClient** | `src/app/services/cylons.service.ts` | Servicio `@Injectable({ providedIn: 'root' })` con `inject(HttpClient)`, `delay(900)`, `tap`, `catchError` y `finalize`. |
+| **5. Manejo de estado con Signals** | `cylons.service.ts`, `app.component.ts` | Señales reactivas: `rutas`, `alertas`, `usuario`, `isLoading`, `errorMessage`, `rutaActiva` y `vozActiva`. |
+| **6. Componentización (Padre / Hijo)** | `route-list/`, `route-card/` | `RouteList` (Padre) itera con `@for` y recibe `RouteCard` (Hijo) mediante comunicación desacoplada `input()` y `output()`. |
+| **7. Renderizado dinámico y 3 estados** | `src/app/app.component.html` | Estado 1: Carga con Spinner; Estado 2: Error con Reintento; Estado 3: Aplicación lista con layout de 2 columnas. |
+| **8. Interacciones significativas** | `voice-panel/`, `voz.service.ts` | 1) "Activar guía por voz": cicla instrucciones audibles con Web Speech API (`es-CO`) y barra de progreso. 2) "Reportar obstáculo": agrega alertas inmutables y las reordena por cercanía métrica. |
+| **9. Diseño Responsive Mobile-First** | `src/styles.css`, `app.component.css` | 1 columna en móvil (375px) y 2 columnas con panel *sticky* en escritorio (≥960px y 1440px). Botones ≥48px y contraste WCAG AAA. |
+| **10. Organización del código** | Estructura en `models/`, `services/`, `components/` | Separación limpia de responsabilidades con documentación en español. |
+
+---
+
+## 4. Truco para Demostración en Vivo (Defensa Oral)
+
+Para demostrar en vivo la resiliencia de la aplicación y el botón **"Reintentar conexión"**:
+
+### Opción A (Desde la Interfaz):
+1. En el pie de página de la aplicación, haga clic en el botón:
+   `🛠️ Demo: Simular fallo de red (404/Error)`.
+2. La aplicación simulará de inmediato un fallo de red, mostrando el contenedor de error ámbar con el mensaje de diagnóstico y el botón **"Reintentar conexión"**.
+3. Pulse **"Restaurar fuente de datos original"** o vuelva a pulsar el botón para recuperar el funcionamiento normal.
+
+### Opción B (Desde el Código):
+En el archivo `src/app/services/cylons.service.ts`, cambie temporalmente la línea 22:
+```typescript
+public dataUrl = 'assets/data/inexistente.json';
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Guarde el archivo y el servidor de desarrollo recargará mostrando la pantalla de error y el botón de reintento.

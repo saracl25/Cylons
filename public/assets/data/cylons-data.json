@@ -1,8 +1,8 @@
 {
   "usuario": {
-    "nombre": "Mariana Valdés",
+    "nombre": "Daniela Suerquia",
     "nivelAsistencia": "Baja visión - Guía auditiva y háptica activada",
-    "ciudad": "Calarcá, Quindío"
+    "ciudad": "Envigado, Antioquia"
   },
   "rutas": [
     {
@@ -31,19 +31,19 @@
     },
     {
       "id": "ruta-4",
-      "nombreDestino": "Casa (Barrio El Cacique)",
+      "nombreDestino": "Casa (Barrio La Magnolia, Envigado)",
       "distanciaKm": 0.5,
       "tiempoEstimado": 7,
       "nivelAccesibilidad": "alta",
-      "descripcion": "Sendero residencial tranquilo con guía perimetral clara e iluminación diurna y nocturna óptima."
+      "descripcion": "Sendero residencial tranquilo por Carrera 43A con guía podotáctil continua e iluminación diurna y nocturna óptima."
     },
     {
       "id": "ruta-5",
-      "nombreDestino": "Plaza de Bolívar de Calarcá",
+      "nombreDestino": "Parque Principal de Envigado",
       "distanciaKm": 1.1,
       "tiempoEstimado": 15,
-      "nivelAccesibilidad": "baja",
-      "descripcion": "Zona céntrica comercial con andenes angostos y presencia de desniveles pronunciados."
+      "nivelAccesibilidad": "media",
+      "descripcion": "Zona céntrica peatonal con cruces semaforizados sonoros y andenes amplios alrededor de la iglesia Santa Gertrudis."
     }
   ],
   "alertas": [

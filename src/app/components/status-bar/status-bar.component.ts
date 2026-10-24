@@ -29,7 +29,7 @@ export class StatusBarComponent implements OnInit, OnDestroy {
   // --- Estados locales con Angular Signals ---
   public readonly horaActual = signal<string>('');
   public readonly nivelBateria = signal<number>(94);
-  public readonly estadoGps = signal<string>('GPS: Calarcá (±2m)');
+  public readonly estadoGps = signal<string>('GPS: Envigado (±2m)');
 
   private timerReloj: ReturnType<typeof setInterval> | null = null;
   private timerBateria: ReturnType<typeof setInterval> | null = null;
